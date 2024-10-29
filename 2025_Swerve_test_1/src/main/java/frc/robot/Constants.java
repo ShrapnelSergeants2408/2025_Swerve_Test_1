@@ -12,6 +12,13 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
+
+import com.pathplanner.lib.util.PIDConstants;
+
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import swervelib.math.Matter;
+
 public final class Constants {
   
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound TODO: change based on robot measurements
