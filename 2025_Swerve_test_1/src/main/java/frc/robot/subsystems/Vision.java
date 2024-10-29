@@ -50,9 +50,6 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 
 public class Vision extends SubsystemBase 
 {
-  /** Creates a new Vision. */
-  public Vision() 
-  {
     //April Tag Field Layout of the year. TODO: update layout once field is released
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
 
@@ -486,11 +483,12 @@ public class Vision extends SubsystemBase
     }
 
     
-  }
+  /* 
 
   @Override
   public void periodic() 
   {
     // This method will be called once per scheduler run
   }
+  */
 }
