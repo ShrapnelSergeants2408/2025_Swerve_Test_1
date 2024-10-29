@@ -48,7 +48,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 
 //sample vision class for photonvision TODO: update based on our hardware/config
 
-public class Vision extends SubsystemBase 
+public class Vision //extends SubsystemBase 
 {
     //April Tag Field Layout of the year. TODO: update layout once field is released
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
