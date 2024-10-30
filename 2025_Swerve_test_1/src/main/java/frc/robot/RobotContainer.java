@@ -18,9 +18,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-//import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.drivebase.AbsoluteDriveAdv;
-//import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import java.io.File;
 
@@ -104,10 +102,10 @@ public class RobotContainer
 
 
     //added for telemetry management
-    telemetryManager = new SwerveShuffleboardManager(drivebase, driverXbox);
+    //telemetryManager = new SwerveShuffleboardManager(drivebase, driverXbox);
 
-    initializeTelemetry();
-    configureBindings();
+    //initializeTelemetry();
+    //configureBindings();
     configureBindings();
   }
 

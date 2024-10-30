@@ -11,6 +11,16 @@ import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import java.util.Map;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.math.geometry.Rotation2d;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import java.util.LinkedList;
+
+
 
 public class SwerveShuffleboardManager {
     private final SwerveSubsystem swerve;
@@ -56,6 +66,8 @@ public class SwerveShuffleboardManager {
         moduleSpeedEntries = new GenericEntry[4];
         moduleAngleEntries = new GenericEntry[4];
         
+        initalizeField();
+        initializeModuleArrays();
         setupModuleWidgets();
         setupPowerTab();
         setupDriveTab();
@@ -165,4 +177,110 @@ public class SwerveShuffleboardManager {
         batteryVoltage.setDouble(pdh.getVoltage());
         totalCurrent.setDouble(pdh.getTotalCurrent());
     }
+
+    // Now let's implement each custom widget:
+
+    /**
+     * Custom Gyro visualization widget
+     */
+    public class GyroWidget implements Sendable {
+        private double angle = 0;
+        private final SwerveSubsystem swerve;
+
+       public GyroWidget(SwerveSubsystem swerve) {
+            this.swerve = swerve;
+       }
+
+       @Override
+        public void initSendable(SendableBuilder builder) {
+            builder.setSmartDashboardType("Gyro");
+            builder.addDoubleProperty("Value", () -> swerve.getHeading().getDegrees(), null);
+        }
+    }
+
+    /**
+     * Custom velocity visualization widget
+     */
+    public class VelocityWidget implements Sendable {
+        private final SwerveSubsystem swerve;
+        private final LinkedList<Double> velocityHistory = new LinkedList<>();
+        private static final int HISTORY_SIZE = 50;
+
+       public VelocityWidget(SwerveSubsystem swerve) {
+           this.swerve = swerve;
+       }
+
+        @Override
+        public void initSendable(SendableBuilder builder) {
+            builder.setSmartDashboardType("Graph");
+            builder.addDoubleProperty("Velocity X", 
+                () -> swerve.getFieldVelocity().vxMetersPerSecond, null);
+            builder.addDoubleProperty("Velocity Y", 
+                () -> swerve.getFieldVelocity().vyMetersPerSecond, null);
+            builder.addDoubleProperty("Angular Velocity", 
+                () -> swerve.getFieldVelocity().omegaRadiansPerSecond, null);
+        }
+    }
+
+    /**
+     * Custom power monitoring widget
+     */
+    public class PowerGraph implements Sendable {
+     private final PowerDistribution pdh;
+        private final LinkedList<Double> powerHistory = new LinkedList<>();
+        private static final int HISTORY_SIZE = 50;
+
+     public PowerGraph(PowerDistribution pdh) {
+          this.pdh = pdh;
+      }
+
+      @Override
+     public void initSendable(SendableBuilder builder) {
+         builder.setSmartDashboardType("Graph");
+         builder.addDoubleProperty("Total Power", () -> pdh.getTotalPower(), null);
+         builder.addDoubleProperty("Voltage", () -> pdh.getVoltage(), null);
+         builder.addDoubleProperty("Current", () -> pdh.getTotalCurrent(), null);
+      }
+    }
+
+    /**
+     * Custom module state visualization widget
+     */
+    public class ModuleStateWidget implements Sendable {
+       private final int moduleIndex;
+       private final SwerveSubsystem swerve;
+
+       public ModuleStateWidget(int moduleIndex, SwerveSubsystem swerve) {
+           this.moduleIndex = moduleIndex;
+           this.swerve = swerve;
+       }
+
+       @Override
+       public void initSendable(SendableBuilder builder) {
+           builder.setSmartDashboardType("Swerve Module");
+           builder.addDoubleProperty("Speed", 
+               () -> swerve.getModuleStates()[moduleIndex].speedMetersPerSecond, null);
+          builder.addDoubleProperty("Angle", 
+              () -> swerve.getModuleStates()[moduleIndex].angle.getDegrees(), null);
+      }
+    }
+
+    // Private initialization methods
+    private void initializeField() {
+        field = new Field2d();
+        driveTab.add("Field", field)
+                .withWidget(BuiltInWidgets.kField)
+                .withSize(6, 4)
+                .withPosition(0, 0);
+    }
+
+    private void initializeModuleArrays() {
+        moduleWidgets = new ModuleStateWidget[4];
+        moduleSpeedEntries = new GenericEntry[4];
+        moduleAngleEntries = new GenericEntry[4];
+        for (int i = 0; i < 4; i++) {
+            moduleWidgets[i] = new ModuleStateWidget(i, swerve);
+        }
+    }
+    
 }
