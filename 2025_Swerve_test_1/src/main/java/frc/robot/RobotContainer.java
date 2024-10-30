@@ -85,14 +85,7 @@ public class RobotContainer
       () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
       () -> driverXbox.getRawAxis(2));
 
-    //TODO: double check this position
-    // telemetry initialization
-    private void initializeTelemetry() {
-        // Set up initial Shuffleboard layouts
-        telemetryManager.setupDriveTab();
-        telemetryManager.setupModuleWidgets();
-        telemetryManager.setupPowerTab();
-    }
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -100,12 +93,11 @@ public class RobotContainer
   {
     // Configure the trigger bindings
 
+    
+    // Initialize telemetry manager with controller and drivebase
+    telemetryManager = new SwerveShuffleboardManager(drivebase, driverXbox);
+        
 
-    //added for telemetry management
-    //telemetryManager = new SwerveShuffleboardManager(drivebase, driverXbox);
-
-    //initializeTelemetry();
-    //configureBindings();
     configureBindings();
   }
 

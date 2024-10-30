@@ -28,21 +28,21 @@ public class SwerveShuffleboardManager {
     private final CommandXboxController driverController;
     
     // Shuffleboard tabs
-    private final ShuffleboardTab driveTab;
-    private final ShuffleboardTab powerTab;
-    private final ShuffleboardTab moduleTab;
+    private ShuffleboardTab driveTab;
+    private ShuffleboardTab powerTab;
+    private ShuffleboardTab moduleTab;
     
     // Field widget
-    private final Field2d field;
+    private Field2d field;
     
     // Module state widgets
-    private final ModuleStateWidget[] moduleWidgets;
+    private ModuleStateWidget[] moduleWidgets;
     
     // Cached entries for frequent updates
-    private final GenericEntry[] moduleSpeedEntries;
-    private final GenericEntry[] moduleAngleEntries;
-    private final GenericEntry batteryVoltage;
-    private final GenericEntry totalCurrent;
+    private GenericEntry[] moduleSpeedEntries;
+    private GenericEntry[] moduleAngleEntries;
+    private GenericEntry batteryVoltage;
+    private GenericEntry totalCurrent;
     
     public SwerveShuffleboardManager(SwerveSubsystem swerve, CommandXboxController controller) {
         this.swerve = swerve;
@@ -66,7 +66,7 @@ public class SwerveShuffleboardManager {
         moduleSpeedEntries = new GenericEntry[4];
         moduleAngleEntries = new GenericEntry[4];
         
-        initalizeField();
+        initializeField();
         initializeModuleArrays();
         setupModuleWidgets();
         setupPowerTab();
@@ -75,6 +75,9 @@ public class SwerveShuffleboardManager {
     
     private void setupModuleWidgets() {
         for (int i = 0; i < 4; i++) {
+            // Create a final copy of the index for use in lambdas
+            final int moduleIndex = i;  // This is effectively final
+
             ShuffleboardLayout moduleLayout = moduleTab
                 .getLayout("Module " + i, BuiltInLayouts.kGrid)
                 .withSize(2, 4)
@@ -93,17 +96,21 @@ public class SwerveShuffleboardManager {
                 .getEntry();
                 
             // Add current readings
-            moduleLayout.addNumber("Drive Current", () -> pdh.getCurrent(i * 2))
+            moduleLayout.addNumber("Drive Current", () -> pdh.getCurrent(moduleIndex * 2))
                       .withWidget(BuiltInWidgets.kNumberBar)
                       .withProperties(Map.of("min", 0, "max", 40));
                       
-            moduleLayout.addNumber("Turn Current", () -> pdh.getCurrent(i * 2 + 1))
+            moduleLayout.addNumber("Turn Current", () -> pdh.getCurrent(moduleIndex * 2 + 1))
                       .withWidget(BuiltInWidgets.kNumberBar)
                       .withProperties(Map.of("min", 0, "max", 20));
         }
     }
     
     private void setupPowerTab() {
+
+        // Pass pdh to PowerGraph constructor
+        PowerGraph powerGraph = new PowerGraph(pdh);
+
         batteryVoltage = powerTab.add("Battery Voltage", 0.0)
             .withWidget(BuiltInWidgets.kVoltageView)
             .withProperties(Map.of("min", 0, "max", 13))
@@ -115,21 +122,22 @@ public class SwerveShuffleboardManager {
             .getEntry();
             
         // Add power graph
-        powerTab.add("Power Usage", new PowerGraph())
+        powerTab.add("Power Usage", powerGraph)
                 .withWidget(BuiltInWidgets.kGraph)
                 .withSize(3, 3)
                 .withPosition(0, 3);
     }
     
     private void setupDriveTab() {
+
         // Add gyro widget
-        driveTab.add("Gyro", new GyroWidget())
+        driveTab.add("Gyro", new GyroWidget(swerve))
                 .withWidget(BuiltInWidgets.kGyro)
                 .withSize(2, 2)
                 .withPosition(6, 0);
                 
         // Add velocity vectors
-        driveTab.add("Robot Velocity", new VelocityWidget())
+        driveTab.add("Robot Velocity", new VelocityWidget(swerve))
                 .withWidget(BuiltInWidgets.kGraph)
                 .withSize(3, 3)
                 .withPosition(6, 2);
@@ -282,5 +290,5 @@ public class SwerveShuffleboardManager {
             moduleWidgets[i] = new ModuleStateWidget(i, swerve);
         }
     }
-    
+
 }
