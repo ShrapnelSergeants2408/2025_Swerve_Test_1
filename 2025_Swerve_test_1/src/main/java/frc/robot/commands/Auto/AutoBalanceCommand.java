@@ -51,6 +51,11 @@ public class AutoBalanceCommand extends Command
     double translationVal = MathUtil.clamp(controller.calculate(swerveSubsystem.getPitch().getDegrees(), 0.0), -0.5,
                                            0.5);
     swerveSubsystem.drive(new Translation2d(translationVal, 0.0), 0.0, true);
+
+            // Add PID telemetry
+            SmartDashboard.putNumber("Balance Error", 
+            controller.getPositionError());
+        SmartDashboard.putNumber("Balance Output", translationVal);
   }
 
   /**

@@ -49,4 +49,20 @@ public final class Constants {
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static final class TelemetryConstants {
+    public static final double TELEMETRY_UPDATE_RATE = 0.02; // 50Hz
+    
+    public static final class ModuleConstants {
+        public static final double MAX_MODULE_SPEED = 4.5;  // m/s
+        public static final double MAX_MODULE_CURRENT = 40.0; // amps
+        public static final double MAX_TURNING_CURRENT = 20.0; // amps
+    }
+    
+    public static final class PowerConstants {
+        public static final double MIN_BATTERY_VOLTAGE = 10.0;
+        public static final double MAX_BATTERY_VOLTAGE = 13.0;
+        public static final double MAX_TOTAL_CURRENT = 120.0;
+    }
+}
 }

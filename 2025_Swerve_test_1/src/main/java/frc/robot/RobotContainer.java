@@ -38,6 +38,10 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
+  // adds telemetry management
+  private final SwerveShuffleboardManager telemetryManager;
+
+
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
@@ -83,12 +87,27 @@ public class RobotContainer
       () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
       () -> driverXbox.getRawAxis(2));
 
+    //TODO: double check this position
+    // telemetry initialization
+    private void initializeTelemetry() {
+        // Set up initial Shuffleboard layouts
+        telemetryManager.setupDriveTab();
+        telemetryManager.setupModuleWidgets();
+        telemetryManager.setupPowerTab();
+    }
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
     // Configure the trigger bindings
+
+
+    //added for telemetry management
+    telemetryManager = new SwerveShuffleboardManager(drivebase, driverXbox);
+
+    initializeTelemetry();
+    configureBindings();
     configureBindings();
   }
 
@@ -149,5 +168,10 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+
+  // Method for telemetry management
+  public void updateTelemetry() {
+    telemetryManager.updateTelemetry();
   }
 }

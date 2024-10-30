@@ -137,6 +137,11 @@ public class AbsoluteDriveAdv extends Command
     {
       swerve.drive(translation, desiredSpeeds.omegaRadiansPerSecond, true);
     }
+
+            // Add telemetry data
+            SmartDashboard.putNumber("Desired Heading X", headingX);
+            SmartDashboard.putNumber("Desired Heading Y", headingY);
+            SmartDashboard.putBoolean("Reset Heading", resetHeading);
   }
 
   // Called once the command ends or is interrupted.

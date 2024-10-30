@@ -149,6 +149,9 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
     }
+
+    // Add logging for module states if needed
+    logModuleStates();
   }
 
   // method for simulation purposes only
@@ -674,5 +677,42 @@ public class SwerveSubsystem extends SubsystemBase
   {
     swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
   }
+
+  //Methods to expose telemetry data
+
+  public SwerveModuleState[] getModuleStates() {
+    return swerveDrive.getStates();
+  }
+
+  public Translation2d[] getModulePositions() {
+    return new Translation2d[] {
+        new Translation2d(0.14605, 0.14605),  // Front Left
+        new Translation2d(0.14605, -0.14605), // Front Right
+        new Translation2d(-0.14605, 0.14605), // Back Left
+        new Translation2d(-0.14605, -0.14605) // Back Right
+    };
+  }
+
+  public double[] getModuleVelocities() {
+    return Arrays.stream(swerveDrive.getStates())
+                .mapToDouble(state -> state.speedMetersPerSecond)
+                .toArray();
+  }
+
+  public double[] getModuleAccelerations() {
+    // Implementation depends on how you're tracking acceleration
+    // This is a placeholder that would need to be implemented
+    return new double[4];
+  }
+
+  private void logModuleStates() {
+    SwerveModuleState[] states = getModuleStates();
+    for (int i = 0; i < states.length; i++) {
+        SmartDashboard.putNumber("Module " + i + " Speed", 
+            states[i].speedMetersPerSecond);
+        SmartDashboard.putNumber("Module " + i + " Angle", 
+            states[i].angle.getDegrees());
+    }
+}
 
 }
