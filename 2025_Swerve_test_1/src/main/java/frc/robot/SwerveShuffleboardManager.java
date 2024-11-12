@@ -28,7 +28,7 @@ public class SwerveShuffleboardManager {
     private final CommandXboxController driverController;
     
     // Shuffleboard tabs
-    private ShuffleboardTab driveTab;
+    private ShuffleboardTab driveTab; 
     private ShuffleboardTab powerTab;
     private ShuffleboardTab moduleTab;
     
