@@ -182,10 +182,7 @@ For each test run:
 - Student Lead: Taaliyah
 
 ### Additional Resources
-- [Team 2408 Wiki](wiki_link)
-- [WPILib Swerve Documentation](link)
-- [FIRST Robotics Competition Resources](link)
-- [Team 2408 Website](team_website)
+
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
