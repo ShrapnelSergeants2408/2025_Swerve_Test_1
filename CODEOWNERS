@@ -1,0 +1,25 @@
+# Default owners for everything
+# These owners will be the default owners for everything in the repository
+# unless a later match takes precedence
+* @dhiebert @jkupka @taaliyah
+
+# Swerve drive core systems
+/src/main/java/frc/robot/subsystems/swerve/ @dhiebert @taaliyah
+/src/main/java/frc/robot/commands/swerve/ @dhiebert @taaliyah
+
+# Build and deployment configurations
+build.gradle @dhiebert @jkupka
+gradlew* @dhiebert @jkupka
+
+# Vendor dependencies
+vendordeps/ @dhiebert @jkupka
+
+# Configuration files
+*.json @dhiebert @jkupka @taaliyah
+
+# Documentation
+/docs/ @taaliyah
+*.md @taaliyah
+
+# Testing files
+/src/test/ @dhiebert @taaliyah
