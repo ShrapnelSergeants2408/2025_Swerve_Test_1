@@ -47,8 +47,8 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 
 
 //sample vision class for photonvision TODO: update based on our hardware/config
-
-public class Vision //extends SubsystemBase 
+// comment test of thingy !!!!
+public class Vision //extends SubsystemBase
 {
     //April Tag Field Layout of the year. TODO: update layout once field is released
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
@@ -93,7 +93,7 @@ public class Vision //extends SubsystemBase
       }
     }
 
-    
+
     /**
      * Calculates a target pose relative to an AprilTag on the field.
      *
@@ -204,7 +204,7 @@ public class Vision //extends SubsystemBase
       if (numTags == 1 && avgDist > 4)
       {
         estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-      } 
+      }
       else
       {
         estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
@@ -482,11 +482,11 @@ public class Vision //extends SubsystemBase
       }
     }
 
-    
-  /* 
+
+  /*
 
   @Override
-  public void periodic() 
+  public void periodic()
   {
     // This method will be called once per scheduler run
   }
